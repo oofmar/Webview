@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CodingPractice</string>
+    <string name ="problem_title">Enter Problem Title</string>
+    <string name ="problem_title_label">Title</string>
+    <string name="problem_details">Details</string>
+    <string name="problem_solved">Solved</string>
 </resources>
