@@ -1,6 +1,7 @@
 package com.example.codingpractice
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,12 @@ class ProblemHolder(
         binding.problemTitle.text = problem.title.toString()
         binding.root.setOnClickListener{
             Toast.makeText(binding.root.context, "${problem.title} clicked ", Toast.LENGTH_SHORT).show()
+        }
+        binding.problemSolved.visibility = if (problem.isSolved){
+            View.VISIBLE
+        }
+        else{
+            View.GONE
         }
     }
 }
