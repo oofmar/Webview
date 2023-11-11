@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/problemListFragment">
+
+    <fragment
+        android:id="@+id/problemListFragment"
+        android:name="com.example.codingpractice.ProblemListFragment"
+        android:label="ProblemListFragment"
+        tools:layout="@layout/fragment_problem_list">
+        <action
+            android:id="@+id/show_problem_detail"
+            app:destination="@id/problemDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/problemDetailFragment"
+        android:name="com.example.codingpractice.ProblemDetailFragment"
+        android:label="ProblemDetailFragment"
+        tools:layout="@layout/fragment_problem_detail">
+        <argument
+            android:name="problemId"
+            app:argType="java.util.UUID" />
+    </fragment>
+</navigation>

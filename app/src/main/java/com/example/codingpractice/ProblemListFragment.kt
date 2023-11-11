@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codingpractice.databinding.FragmentProblemDetailBinding
 import com.example.codingpractice.databinding.FragmentProblemListBinding
@@ -41,7 +42,9 @@ class ProblemListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 problemListViewModel.problems.collect{ problems ->
-                    binding.problemRecyclerView.adapter = ProblemListAdapter(problems)
+                    binding.problemRecyclerView.adapter = ProblemListAdapter(problems){problemId->
+                        findNavController().navigate(ProblemListFragmentDirections.showProblemDetail(problemId))
+                    }
                 }
             }
         }

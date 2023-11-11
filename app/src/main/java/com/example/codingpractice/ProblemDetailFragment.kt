@@ -1,32 +1,36 @@
 package com.example.codingpractice
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import com.example.codingpractice.databinding.FragmentProblemDetailBinding
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
-
+private const val TAG = "ProblemDetailFragment"
 class ProblemDetailFragment: Fragment() {
     private var _binding: FragmentProblemDetailBinding? = null
+
     private val binding
         get() = checkNotNull(_binding){
             "Cannot access binding because it is null. Is this view visible?"
         }
 
-    private lateinit var problem: Problem
-    override fun onCreate(savedInstanceState: Bundle?){
-        super.onCreate(savedInstanceState)
-        problem = Problem(
-            id = UUID.randomUUID(),
-            title = "",
-            date = Date(),
-            isSolved = false
-        )
+    private val args: ProblemDetailFragmentArgs by navArgs()
+    private val problemDetailViewModel: ProblemDetailViewModel by viewModels{
+        ProblemDetailViewModelFactory(args.problemId)
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,14 +45,25 @@ class ProblemDetailFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.apply{
             problemTitle.doOnTextChanged { text, _, _,_ ->
-                problem = problem.copy(title = text.toString())
+                problemDetailViewModel.updateProblem { oldProblem->
+                    oldProblem.copy(title= text.toString())
+                }
             }
             problemDate.apply{
-                text = problem.date.toString()
+
                 isEnabled = false
             }
             problemSolved.setOnCheckedChangeListener(){_, isChecked->
-                problem = problem.copy(isSolved = isChecked)
+                problemDetailViewModel.updateProblem { oldProblem->
+                    oldProblem.copy(isSolved = isChecked)
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                problemDetailViewModel.problem.collect{problem->
+                    problem?.let{updateUi(it)}
+                }
             }
         }
     }
@@ -56,5 +71,14 @@ class ProblemDetailFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    private fun updateUi(problem: Problem){
+        binding.apply{
+            if(problemTitle.text.toString() != problem.title){
+                problemTitle.setText(problem.title)
+            }
+            problemDate.text = problem.date.toString()
+            problemSolved.isChecked = problem.isSolved
+        }
     }
 }

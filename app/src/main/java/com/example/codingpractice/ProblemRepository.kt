@@ -3,15 +3,24 @@ package com.example.codingpractice
 import android.content.Context
 import androidx.room.Room
 import com.example.codingpractice.database.ProblemDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 private const val DATABASE_NAME = "problem-database"
-class ProblemRepository private constructor(context: Context) {
+class ProblemRepository private constructor(context: Context, private val coroutineScope: CoroutineScope= GlobalScope) {
     private val database: ProblemDatabase=Room.databaseBuilder(context.applicationContext, ProblemDatabase::class.java, DATABASE_NAME).createFromAsset(
         DATABASE_NAME).build()
     suspend fun getProblems(): Flow<List<Problem>> = database.problemDao().getProblems()
     suspend fun getProblem(id:UUID): Problem = database.problemDao().getProblem(id)
+
+    fun updateProblem(problem: Problem){
+        coroutineScope.launch{
+            database.problemDao().updateProblem(problem)
+        }
+    }
 
     companion object{
         private var INSTANCE: ProblemRepository? = null
