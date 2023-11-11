@@ -7,11 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codingpractice.databinding.FragmentProblemDetailBinding
 import com.example.codingpractice.databinding.FragmentProblemListBinding
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
-private const val TAG = "ProblemListFragment"
+
 class ProblemListFragment : Fragment() {
     private var _binding: FragmentProblemListBinding? = null
     private val binding
@@ -19,10 +25,6 @@ class ProblemListFragment : Fragment() {
             "Cannot access binding because it is null. Is the view visible?"
         }
     private val problemListViewModel: ProblemListViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?){
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total crimes: ${problemListViewModel.problems.size}")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,12 +33,19 @@ class ProblemListFragment : Fragment() {
     ): View? {
         _binding = FragmentProblemListBinding.inflate(inflater, container, false)
         binding.problemRecyclerView.layoutManager = LinearLayoutManager(context)
-        val problems = problemListViewModel.problems
-        val adapter = ProblemListAdapter(problems)
-        binding.problemRecyclerView.adapter = adapter
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                problemListViewModel.problems.collect{ problems ->
+                    binding.problemRecyclerView.adapter = ProblemListAdapter(problems)
+                }
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

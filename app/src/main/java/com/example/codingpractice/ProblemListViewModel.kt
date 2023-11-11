@@ -1,20 +1,29 @@
 package com.example.codingpractice
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
+import kotlinx.coroutines.flow.collect
 
+private const val TAG = "CrimeListViewModel"
 class ProblemListViewModel: ViewModel() {
-    val problems = mutableListOf<Problem>()
+    private val problemRepository = ProblemRepository.get()
+    private val _problems: MutableStateFlow<List<Problem>> = MutableStateFlow(emptyList())
+    val problems: StateFlow<List<Problem>>
+        get() = _problems.asStateFlow()
     init{
-        for( i in 0 until 100){
-            val problem = Problem(
-                id = UUID.randomUUID(),
-                title = "Problem #$i",
-                date = Date(),
-                isSolved = i%2==0
-            )
-            problems += problem
+
+        viewModelScope.launch {
+            problemRepository.getProblems().collect{
+                _problems.value = it
+            }
         }
     }
 }
