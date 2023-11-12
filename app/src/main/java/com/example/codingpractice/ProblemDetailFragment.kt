@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.codingpractice.databinding.FragmentProblemDetailBinding
 import kotlinx.coroutines.launch
@@ -49,10 +52,6 @@ class ProblemDetailFragment: Fragment() {
                     oldProblem.copy(title= text.toString())
                 }
             }
-            problemDate.apply{
-
-                isEnabled = false
-            }
             problemSolved.setOnCheckedChangeListener(){_, isChecked->
                 problemDetailViewModel.updateProblem { oldProblem->
                     oldProblem.copy(isSolved = isChecked)
@@ -66,6 +65,12 @@ class ProblemDetailFragment: Fragment() {
                 }
             }
         }
+        setFragmentResultListener(
+            DatePickerFragment.REQUEST_KEY_DATE
+        ){_, bundle ->
+            val newDate = bundle.getSerializable(DatePickerFragment.BUNDLE_KEY_DATE) as Date
+            problemDetailViewModel.updateProblem { it.copy(date=newDate) }
+        }
     }
 
     override fun onDestroyView() {
@@ -78,6 +83,11 @@ class ProblemDetailFragment: Fragment() {
                 problemTitle.setText(problem.title)
             }
             problemDate.text = problem.date.toString()
+            problemDate.setOnClickListener{
+                findNavController().navigate(
+                    ProblemDetailFragmentDirections.selectDate(problem.date)
+                )
+            }
             problemSolved.isChecked = problem.isSolved
         }
     }
