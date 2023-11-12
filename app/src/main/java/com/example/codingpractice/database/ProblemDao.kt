@@ -1,6 +1,7 @@
 package com.example.codingpractice.database
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.codingpractice.Problem
@@ -10,10 +11,12 @@ import java.util.UUID
 @Dao
 interface ProblemDao {
     @Query("SELECT * FROM problem")
-    suspend fun getProblems(): Flow<List<Problem>>
+    fun getProblems(): Flow<List<Problem>>
 
     @Query("SELECT * FROM problem WHERE id=(:id)")
-    suspend fun getProblem(id: UUID): Problem
+    fun getProblem(id: UUID): Problem
     @Update
     suspend fun updateProblem(problem: Problem)
+    @Insert
+    suspend fun addProblem(problem: Problem)
 }

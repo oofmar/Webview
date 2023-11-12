@@ -11,15 +11,20 @@ import java.util.UUID
 
 private const val DATABASE_NAME = "problem-database"
 class ProblemRepository private constructor(context: Context, private val coroutineScope: CoroutineScope= GlobalScope) {
-    private val database: ProblemDatabase=Room.databaseBuilder(context.applicationContext, ProblemDatabase::class.java, DATABASE_NAME).createFromAsset(
-        DATABASE_NAME).build()
+    private val database: ProblemDatabase=
+        Room.databaseBuilder(context.applicationContext, ProblemDatabase::class.java, DATABASE_NAME).
+//    createFromAsset(DATABASE_NAME).
+            allowMainThreadQueries().build()
     suspend fun getProblems(): Flow<List<Problem>> = database.problemDao().getProblems()
     suspend fun getProblem(id:UUID): Problem = database.problemDao().getProblem(id)
 
-    fun updateProblem(problem: Problem){
+   fun updateProblem(problem: Problem){
         coroutineScope.launch{
             database.problemDao().updateProblem(problem)
         }
+    }
+    suspend fun addProblem(problem:Problem){
+        database.problemDao().addProblem(problem)
     }
 
     companion object{

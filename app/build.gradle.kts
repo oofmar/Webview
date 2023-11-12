@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -41,11 +41,12 @@ android {
 }
 
 dependencies{
+
     implementation ("androidx.navigation:navigation-fragment-ktx:2.4.1")
     implementation ("androidx.navigation:navigation-ui-ktx:2.4.1")
     implementation ("androidx.room:room-runtime:2.4.2")
     implementation ("androidx.room:room-ktx:2.4.2")
-    kapt ("androidx.room:room-compiler:2.4.2")
+    ksp("androidx.room:room-compiler:2.5.0")
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
     implementation ("androidx.fragment:fragment-ktx:1.4.1")

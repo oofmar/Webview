@@ -26,4 +26,7 @@ class ProblemListViewModel: ViewModel() {
             }
         }
     }
+    suspend fun addProblem(problem: Problem){
+        problemRepository.addProblem(problem)
+    }
 }
