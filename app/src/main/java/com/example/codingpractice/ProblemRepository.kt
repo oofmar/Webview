@@ -3,6 +3,7 @@ package com.example.codingpractice
 import android.content.Context
 import androidx.room.Room
 import com.example.codingpractice.database.ProblemDatabase
+import com.example.codingpractice.database.migration_1_2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ class ProblemRepository private constructor(context: Context, private val corout
     private val database: ProblemDatabase=
         Room.databaseBuilder(context.applicationContext, ProblemDatabase::class.java, DATABASE_NAME).
 //    createFromAsset(DATABASE_NAME).
-            allowMainThreadQueries().build()
+            allowMainThreadQueries().addMigrations(migration_1_2).build()
     suspend fun getProblems(): Flow<List<Problem>> = database.problemDao().getProblems()
     suspend fun getProblem(id:UUID): Problem = database.problemDao().getProblem(id)
 

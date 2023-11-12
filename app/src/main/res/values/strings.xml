@@ -5,4 +5,8 @@
     <string name="problem_details">Details</string>
     <string name="problem_solved">Solved</string>
     <string name="new_problem">New Problem</string>
+    <string name="share_text">Share</string>
+    <string name = "problem_report_solved">The problem is solved </string>
+    <string name="problem_report_unsolved">The problem is not solved </string>
+    <string name="send_report">Send problem via</string>
 </resources>

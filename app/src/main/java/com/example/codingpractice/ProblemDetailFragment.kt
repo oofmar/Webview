@@ -1,6 +1,8 @@
 package com.example.codingpractice
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 private const val TAG = "ProblemDetailFragment"
+private const val DATE_FORMAT = "EEE, MMM, dd"
 class ProblemDetailFragment: Fragment() {
     private var _binding: FragmentProblemDetailBinding? = null
 
@@ -32,6 +35,7 @@ class ProblemDetailFragment: Fragment() {
     private val problemDetailViewModel: ProblemDetailViewModel by viewModels{
         ProblemDetailViewModelFactory(args.problemId)
     }
+
 
 
 
@@ -57,6 +61,7 @@ class ProblemDetailFragment: Fragment() {
                     oldProblem.copy(isSolved = isChecked)
                 }
             }
+
         }
         viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -89,6 +94,26 @@ class ProblemDetailFragment: Fragment() {
                 )
             }
             problemSolved.isChecked = problem.isSolved
+            problemShare.setOnClickListener{
+                val reportIntent = Intent(Intent.ACTION_SEND).apply{
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT,getProblemReport(problem))
+                }
+                val chooserIntent = Intent.createChooser(reportIntent, getString(R.string.send_report))
+                startActivity(reportIntent)
+
+
+            }
         }
+    }
+    private fun getProblemReport(problem: Problem):String{
+        val solvedString = if(problem.isSolved){
+            getString(R.string.problem_report_solved)
+        }
+        else{
+            getString(R.string.problem_report_unsolved)
+        }
+        val dateString = DateFormat.format(DATE_FORMAT, problem.date).toString()
+        return getString( 0,dateString,solvedString)
     }
 }
