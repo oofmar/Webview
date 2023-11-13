@@ -34,6 +34,11 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/problem_sendTo"
+        android:text="@string/problem_report_sendTo"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/problem_share"
         android:text="@string/share_text"/>
 </LinearLayout>
