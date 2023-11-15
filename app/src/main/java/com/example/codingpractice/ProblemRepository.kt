@@ -15,7 +15,7 @@ class ProblemRepository private constructor(context: Context, private val corout
     private val database: ProblemDatabase=
         Room.databaseBuilder(context.applicationContext, ProblemDatabase::class.java, DATABASE_NAME).
 //    createFromAsset(DATABASE_NAME).
-            allowMainThreadQueries().addMigrations(migration_1_2).build()
+        allowMainThreadQueries().addMigrations(migration_1_2).build()
     suspend fun getProblems(): Flow<List<Problem>> = database.problemDao().getProblems()
     suspend fun getProblem(id:UUID): Problem = database.problemDao().getProblem(id)
 

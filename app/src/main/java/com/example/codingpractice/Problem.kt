@@ -2,6 +2,7 @@ package com.example.codingpractice
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.net.URL
 import java.util.Date
 import java.util.UUID
 
