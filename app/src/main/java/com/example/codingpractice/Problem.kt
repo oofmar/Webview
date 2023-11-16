@@ -11,6 +11,7 @@ data class Problem(
     @PrimaryKey val id: UUID,
     val title: String,
     val date: Date,
+    val url: String = "",
     val isSolved: Boolean,
     val sendTo: String=""
 )
