@@ -16,6 +16,8 @@ private const val TAG = "CrimeListViewModel"
 class ProblemListViewModel: ViewModel() {
     private val problemRepository = ProblemRepository.get()
     private val _problems: MutableStateFlow<List<Problem>> = MutableStateFlow(emptyList())
+
+
     val problems: StateFlow<List<Problem>>
         get() = _problems.asStateFlow()
     init{
