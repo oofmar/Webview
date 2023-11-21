@@ -11,7 +11,8 @@ class ProblemHolder(
     private val binding: ListItemProblemBinding
 ): RecyclerView.ViewHolder(binding.root){
     fun bind(problem: Problem, onProblemClicked: (problemId:UUID)-> Unit){
-        binding.problemDate.text = problem.date.toString()
+        binding.problemCategory.text = "Problem Category: " + problem.category.toString()
+        binding.problemDifficulty.text = "Problem Difficulty: " + problem.difficulty.toString()
         binding.problemTitle.text = problem.title.toString()
         binding.root.setOnClickListener{
         onProblemClicked(problem.id)

@@ -21,21 +21,33 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
+         />
     <TextView
-        android:id="@+id/problem_date"
+        android:id="@+id/problem_difficulty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Problem Date"
+        android:text="Problem Difficulty: "
         app:layout_constraintEnd_toStartOf="@+id/problem_solved"
-        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/problem_title" />
+        app:layout_constraintTop_toBottomOf="@+id/problem_title"
+        />
+    <TextView
+    android:id="@+id/problem_category"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="8dp"
+    android:text="Problem Category: "
+    app:layout_constraintEnd_toStartOf="@+id/problem_solved"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/problem_difficulty" />
+
 
     <ImageView
         android:id="@+id/problem_solved"

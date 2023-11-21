@@ -83,6 +83,8 @@ class ProblemListFragment : Fragment() {
             val newProblem = Problem(
                 id = UUID.randomUUID(),
                 title ="",
+                difficulty = "Easy",
+                category = "Warm Up",
                 url = "Test",
                 date = Date(),
                 isSolved = false
