@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/problemListFragment">
 
+    <!-- Define the problemListFragment with actions -->
     <fragment
         android:id="@+id/problemListFragment"
         android:name="com.example.codingpractice.ProblemListFragment"
@@ -14,6 +15,8 @@
             android:id="@+id/show_problem_detail"
             app:destination="@id/problemDetailFragment" />
     </fragment>
+
+    <!-- Define the problemDetailFragment with arguments and actions -->
     <fragment
         android:id="@+id/problemDetailFragment"
         android:name="com.example.codingpractice.ProblemDetailFragment"
@@ -26,12 +29,45 @@
             android:id="@+id/select_date"
             app:destination="@id/datePickerFragment" />
     </fragment>
+
+    <!-- Define the datePickerFragment with arguments -->
     <dialog
         android:id="@+id/datePickerFragment"
         android:name="com.example.codingpractice.DatePickerFragment"
-        android:label="DatePickerFragment" >
+        android:label="DatePickerFragment"
+        tools:layout="@layout/fragment_date_picker">
         <argument
             android:name="problemDate"
             app:argType="java.util.Date" />
     </dialog>
+
+    <!-- Define the beginnerFragment with an action pointing to the webViewFragment -->
+    <fragment
+        android:id="@+id/beginnerFragment"
+        android:name="com.example.codingpractice.BeginnerFragment"
+        android:label="Beginner Problems"
+        tools:layout="@layout/fragment_beginner">
+        <action
+            android:id="@+id/action_beginnerFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+
+    <!-- Define the intermediateFragment -->
+    <fragment
+        android:id="@+id/intermediateFragment"
+        android:name="com.example.codingpractice.IntermediateFragment"
+        android:label="Intermediate Problems"
+        tools:layout="@layout/fragment_intermediate" />
+
+    <!-- Define the webViewFragment with an argument for the URL -->
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.codingpractice.WebViewFragment"
+        android:label="WebView"
+        tools:layout="@layout/fragment_web_view">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
